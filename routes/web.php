@@ -37,8 +37,20 @@ Route::get('/linelogin', function(){
 });
 
 // line callback動作
-Route::get('/callback', function () {
-    echo "callback";
+Route::get('/callback', function (Request $request) {
+    // Ref https://developers.line.biz/en/docs/line-login/integrate-line-login/#receiving-the-authorization-code-or-error-response-with-a-web-app
+    /**
+     * 回傳以下資料
+     * code 所取得的code效期10分鐘
+     * state
+     */
+    // dd($request);
+    // 取得 authorization code
+    $code = $request->code;
+    // 取得 state (暫時用不到)
+    $state = $request->state;
+
+    dd($code);
 });
 
 // 主頁
