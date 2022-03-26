@@ -84,7 +84,42 @@ Route::get('/callback', function (Request $request, GuzzleClient $http) {
      */
 
     $payload = json_decode((string)$response->getBody(), true);
-    dd($payload);
+    // dd($payload);
+
+    // 取使用者Data
+    // Ref https://developers.line.biz/en/reference/line-login/#get-user-profile
+    /**
+     * 回傳以下資訊：
+     * userId 使用者ID
+     * displayName 名字
+     * pictureUrl 大頭貼
+     * statusMessage 狀態
+     */
+    $verify_url = 'https://api.line.me/v2/profile';
+    $post_data = [
+        'headers' => [
+            'Authorization' => $payload['token_type'].' '.$payload['access_token'],
+        ],
+        'http_errors' => false
+    ];
+    $response_verify = $http->post($verify_url, $post_data);
+
+    if ($response_verify->getStatusCode() != 200) {
+        return redirect("/login")->with(["msg" => $response_verify->getBody()]);
+    }
+
+    $profile = json_decode((string)$response_verify->getBody(), true);
+
+    // 存使用者資訊
+    session([
+        'token'=>$payload['access_token'],
+        'refresh_token'=>$payload['refresh_token'],
+        'user_id'=>$profile['userId'],
+        'user_name'=>$profile['displayName'],
+        'user_pic'=>$profile['pictureUrl']
+    ]);
+
+    return redirect('/');
 
 });
 
