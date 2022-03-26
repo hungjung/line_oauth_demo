@@ -21,7 +21,16 @@ Route::get('/login', function () {
 });
 
 // 登出動作
-Route::redirect('/logout', '/login');
+Route::get('logout', function(Request $request) {
+    header("cache-Control:no-store,no-cache, must-revalidate");
+    header("cache-Control:post-check=0,pre-check=0",false);
+    header("Pragma:no-cache");
+    header("Expires: Sat,26 Jul 1997 05:00:00: GMT");
+    session()->flush();
+    session()->regenerate();
+    // 尚缺註銷 access token 的流程
+    return redirect("/");
+});
 
 // line登入請求
 Route::get('/linelogin', function(){
@@ -123,22 +132,24 @@ Route::get('/callback', function (Request $request, GuzzleClient $http) {
 
 });
 
-// 主頁
-Route::get('/', function () {
-    return view('blank');
-});
+Route::middleware(['userAuth'])->group(function(){
+    // 主頁
+    Route::get('/', function () {
+        return view('blank');
+    });
 
-// 訂閱通知
-Route::get('/scribe', function () {
-    return view('scribe');
-});
+    // 訂閱通知
+    Route::get('/scribe', function () {
+        return view('scribe');
+    });
 
-// 取消訂閱
-Route::get('/unscribe', function () {
-    return view('unscribe');
-});
+    // 取消訂閱
+    Route::get('/unscribe', function () {
+        return view('unscribe');
+    });
 
-// 發佈訊息
-Route::get('/unscribe', function () {
-    return view('unscribe');
+    // 發佈訊息
+    Route::get('/unscribe', function () {
+        return view('unscribe');
+    });
 });
