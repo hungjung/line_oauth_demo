@@ -45,6 +45,11 @@
                                     <form class="user">
                                         <p>&nbsp;</p>
                                         <p>&nbsp;</p>
+                                        @if(isset($msg))
+                                        <div class="card mb-1 py-1 border-left-danger">
+                                            {{ $msg }}
+                                        </div>
+                                        @endif
                                         <a href="/googlelogin" class="btn btn-google btn-user btn-block">
                                             <i class="fab fa-google fa-fw"></i> Login with Google
                                         </a>

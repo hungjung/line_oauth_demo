@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use \GuzzleHttp\Client as GuzzleClient;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,7 +38,7 @@ Route::get('/linelogin', function(){
 });
 
 // line callback動作
-Route::get('/callback', function (Request $request) {
+Route::get('/callback', function (Request $request, GuzzleClient $http) {
     // Ref https://developers.line.biz/en/docs/line-login/integrate-line-login/#receiving-the-authorization-code-or-error-response-with-a-web-app
     /**
      * 回傳以下資料
@@ -50,7 +51,41 @@ Route::get('/callback', function (Request $request) {
     // 取得 state (暫時用不到)
     $state = $request->state;
 
-    dd($code);
+    // dd($code);
+    // 透過所取得的code去取access token
+    $token_url = "https://api.line.me/oauth2/v2.1/token";
+    $form_data = [
+        'form_params' => [
+            'grant_type' => "authorization_code",
+            'code' => $code,
+            'redirect_uri' => env("LOGIN_CALLBACK"),
+            'client_id' => env("LOGIN_CLIENT_ID"),
+            'client_secret' => env("LOGIN_CLIENT_SECRET")
+        ],
+        'http_errors' => false
+    ];
+
+    $response = $http->post($token_url, $form_data);
+
+    if ($response->getStatusCode() != 200) {
+        return view("/login", ['msg'=>$response->getBody()]);
+    }
+
+    // 成功取得access token資訊
+    // Ref https://developers.line.biz/en/docs/line-login/integrate-line-login/#response
+    /**
+     * 回傳以下資訊：
+     * acces_token 有效期30天
+     * token_type => "Bearer"
+     * refresh_token
+     * expires_in => 2592000
+     * scope
+     * id_token
+     */
+
+    $payload = json_decode((string)$response->getBody(), true);
+    dd($payload);
+
 });
 
 // 主頁
