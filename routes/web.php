@@ -23,7 +23,19 @@ Route::get('/login', function () {
 Route::redirect('/logout', '/login');
 
 // line登入請求
-Route::redirect('/linelogin', '/');
+Route::get('/linelogin', function(){
+    // Ref https://developers.line.biz/en/docs/line-login/integrate-line-login/#making-an-authorization-request
+    $query = http_build_query([
+        'response_type' => "code",
+        'client_id' => env("LOGIN_CLIENT_ID"),
+        'redirect_uri' => env("LOGIN_CALLBACK"),
+        'state' => date('Ymd'),
+        'scope' => 'profile openid',
+    ]);
+
+    return redirect('https://access.line.me/oauth2/v2.1/authorize?'.$query);
+});
+
 // line callback動作
 Route::get('/callback', function () {
     echo "callback";
