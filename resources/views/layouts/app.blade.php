@@ -58,21 +58,21 @@
             <!-- Nav Item - Tables -->
             <li class="nav-item">
                 <a class="nav-link" href="/unsubscribe">
-                    <i class="fas fa-fw fa-table"></i>
+                    <i class="fas fa-bell-slash"></i>
                     <span>取消訂閱</span></a>
             </li>
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
                 <a class="nav-link" href="/sendout">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>發送訊息</span></a>
+                    <i class="fas fa-comment-dots"></i>
+                    <span>發送訊息給所有人</span></a>
             </li>
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
                 <a class="nav-link" href="/">
-                    <i class="fas fa-fw fa-table"></i>
+                    <i class="fas fa-home"></i>
                     <span>回主頁</span></a>
             </li>
             @endif
