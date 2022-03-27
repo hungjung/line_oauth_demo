@@ -116,7 +116,7 @@ Route::get('/callback', function (Request $request, GuzzleClient $http) {
 
     // 存使用者資訊
     session([
-        'token'=>$payload['access_token'],
+        'access_token'=>$payload['access_token'],
         'refresh_token'=>$payload['refresh_token'],
         'user_id'=>$profile['userId'],
         'user_name'=>$profile['displayName'],
@@ -149,11 +149,25 @@ Route::middleware(['userAuth'])->group(function(){
     });
 
     // 登出動作
-    Route::get('logout', function(Request $request) {
+    Route::get('logout', function(Request $request, GuzzleClient $http) {
         // 刪本機session
         session()->flush();
         session()->regenerate();
-        // 尚缺註銷 access token 的流程
+
+        // 實作註銷 line login access token 的流程
+        $revoke_url = 'https://api.line.me/oauth2/v2.1/verify';
+        $form_data = [
+            'form_params' => [
+                'id_token' => session("access_token"),
+                'redirect_uri' => env("LOGIN_CALLBACK"),
+                'client_id' => env("LOGIN_CLIENT_ID"),
+                'user_id' => session("user_id")
+            ],
+            'http_errors' => false
+        ];
+
+        $revoke_response = $http->post($revoke_url, $form_data);
+
         return redirect("/");
     });
 });
