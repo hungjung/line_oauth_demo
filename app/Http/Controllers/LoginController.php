@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use \GuzzleHttp\Client as GuzzleClient;
 
 class LoginController extends Controller
@@ -18,7 +19,12 @@ class LoginController extends Controller
 
     //登入後主頁
     public function index() {
-        return view('blank');
+
+        // 取得訂閱清單
+        $get_subsribes = DB::select('select user_name,user_access_token,created_at from subscribe order by created_at desc');
+        // dd($get_subsribes);
+
+        return view('blank', ["subscribe_list" => $get_subsribes]);
     }
 
     // 向line login提出登入請求
