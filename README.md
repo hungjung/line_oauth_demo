@@ -13,11 +13,11 @@
     > 此套件Laravel框架有內建，不需要額外安裝
 * [Integrating LINE Login with your web app](https://developers.line.biz/en/docs/line-login/integrate-line-login/)
 * [LINE Login v2.1 API reference](https://developers.line.biz/en/reference/line-login/)
-    > authorize code 有效期： 10分鐘
-    > access token 有效期： 30天
+    > authorize code 有效期： 10分鐘<br>
+    > access token 有效期： 30天<br>
     > refresh token 有效期： 90天
 * [LINE Notify API Document](https://notify-bot.line.me/doc/en/)
-    > 個人的 access token 永久有效
+    > 個人的 access token 永久有效<br>
     > 一小時內單一 server 單一 access token 呼叫 api 次數上限是1000次
 
 ## 執行環境
