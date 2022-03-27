@@ -41,8 +41,10 @@ Route::middleware(['userAuth'])->group(function(){
     // 送出取消訂閱的請求
     Route::get('/notifyrevoke', [NotifyController::class, 'notifyrevoke']);
 
-    // 發佈訊息
+    // 發佈訊息填寫頁
     Route::get('/sendout', [NotifyController::class, 'sendout']);
+    // 把訊息發出去
+    Route::post('/sendout', [NotifyController::class, 'message']);
 
     // 登出動作
     Route::get('logout', [LoginController::class, 'logout']);

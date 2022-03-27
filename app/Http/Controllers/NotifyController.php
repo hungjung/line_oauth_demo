@@ -124,8 +124,62 @@ class NotifyController extends Controller
         }
     }
 
+    // 發佈訊息的頁面
     public function sendout() {
-        return view('sendout');
+
+        $select_sql = 'select user_name,user_access_token,created_at from subscribe';
+        $get_subsribes = DB::select($select_sql);
+        $cnt = count($get_subsribes);
+
+        return view('sendout', ["cnt"=>$cnt]);
+    }
+
+    // 發佈訊息
+    public function message(Request $request, GuzzleClient $http) {
+        // 收到的的訊息是 $request->msg_text;
+
+        // 先找訂閱戶
+        $select_sql = 'select user_name,user_access_token,created_at from subscribe';
+        $get_subscribes = DB::select($select_sql);
+        $cnt = count($get_subscribes);
+
+        // 實作送訊息
+        $done = 0;
+        foreach ($get_subscribes as $value) {
+            $user_access_token = $value->user_access_token;
+            $post_url = 'https://notify-api.line.me/api/notify';
+            $post_data = [
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Authorization' => 'Bearer '.$user_access_token,
+                ],
+                'form_params' => [
+                    'message' => $request->msg_text
+                ],
+                'http_errors' => false
+            ];
+
+            $post_response = $http->post($post_url, $post_data);
+            $post_result = json_decode((string)$post_response->getBody(), true);
+
+            // dump($post_result);
+            // 成功者計數+1
+            if ($post_result['status'] == 200)
+                $done++;
+
+            // TODO: 可做稽核紀錄
+        }
+
+        if ($done>0) {
+            session()->flash("sended", 1);
+        } else {
+            session()->flash("sended", 2);
+        }
+        session()->flash("cnt", $cnt);
+        session()->flash("done", $done);
+
+        return redirect("/sendout");
+
     }
 
 }
