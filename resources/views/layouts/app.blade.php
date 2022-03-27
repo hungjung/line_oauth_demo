@@ -64,7 +64,7 @@
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" href="/message">
+                <a class="nav-link" href="/sendout">
                     <i class="fas fa-fw fa-table"></i>
                     <span>發送訊息</span></a>
             </li>
