@@ -15,6 +15,7 @@ class UserAuth
      */
     public function handle($request, Closure $next)
     {
+        // 本機session確認
         if(!session('user_name')){
             return redirect('/login');
         }

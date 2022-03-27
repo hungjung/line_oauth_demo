@@ -17,33 +17,26 @@ use \GuzzleHttp\Client as GuzzleClient;
 
 // 登入頁
 Route::get('/login', function () {
+    // 本機session確認
+    if(session('user_name')){
+        return redirect('/');
+    }
     return view('login');
-});
-
-// 登出動作
-Route::get('logout', function(Request $request) {
-    header("cache-Control:no-store,no-cache, must-revalidate");
-    header("cache-Control:post-check=0,pre-check=0",false);
-    header("Pragma:no-cache");
-    header("Expires: Sat,26 Jul 1997 05:00:00: GMT");
-    session()->flush();
-    session()->regenerate();
-    // 尚缺註銷 access token 的流程
-    return redirect("/");
 });
 
 // line登入請求
 Route::get('/linelogin', function(){
     // Ref https://developers.line.biz/en/docs/line-login/integrate-line-login/#making-an-authorization-request
+    $authorize_url = "https://access.line.me/oauth2/v2.1/authorize";
     $query = http_build_query([
         'response_type' => "code",
         'client_id' => env("LOGIN_CLIENT_ID"),
         'redirect_uri' => env("LOGIN_CALLBACK"),
-        'state' => date('Ymd'),
+        'state' => csrf_token(),
         'scope' => 'profile openid',
     ]);
 
-    return redirect('https://access.line.me/oauth2/v2.1/authorize?'.$query);
+    return redirect($authorize_url.'?'.$query);
 });
 
 // line callback動作
@@ -57,8 +50,10 @@ Route::get('/callback', function (Request $request, GuzzleClient $http) {
     // dd($request);
     // 取得 authorization code
     $code = $request->code;
-    // 取得 state (暫時用不到)
-    $state = $request->state;
+    // 取得 state 和 csrf_token 比對
+    if ($request->state !== csrf_token()) {
+        return response('無效的操作！', 403);
+    }
 
     // dd($code);
     // 透過所取得的code去取access token
@@ -151,5 +146,14 @@ Route::middleware(['userAuth'])->group(function(){
     // 發佈訊息
     Route::get('/unscribe', function () {
         return view('unscribe');
+    });
+
+    // 登出動作
+    Route::get('logout', function(Request $request) {
+        // 刪本機session
+        session()->flush();
+        session()->regenerate();
+        // 尚缺註銷 access token 的流程
+        return redirect("/");
     });
 });
