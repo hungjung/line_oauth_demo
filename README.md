@@ -61,6 +61,8 @@
     ;
     ```
 
+* Laravel 網頁根目錄設定在 `public`。
+
 * .env檔以下參數設定
   * APP_URL： 專案的主要url
   * LOGIN_CLIENT_ID： 實作line login的client id (channel id)
