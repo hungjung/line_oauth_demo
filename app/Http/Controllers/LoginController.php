@@ -15,6 +15,12 @@ class LoginController extends Controller
         }
         return view('login');
     }
+
+    //登入後主頁
+    public function index() {
+        return view('blank');
+    }
+
     // 向line login提出登入請求
     public function redirect()
     {
@@ -25,7 +31,7 @@ class LoginController extends Controller
             'client_id' => env("LOGIN_CLIENT_ID"),
             'redirect_uri' => env("LOGIN_CALLBACK"),
             'state' => csrf_token(),
-            'scope' => 'profile openid',
+            'scope' => 'profile openid email',
         ]);
 
         return redirect($authorize_url.'?'.$query);
@@ -84,36 +90,34 @@ class LoginController extends Controller
         // dd($payload);
 
         // 取使用者Data
-        // Ref https://developers.line.biz/en/reference/line-login/#get-user-profile
-        /**
-         * 回傳以下資訊：
-         * userId 使用者ID
-         * displayName 名字
-         * pictureUrl 大頭貼
-         * statusMessage 狀態
-         */
-        $verify_url = 'https://api.line.me/v2/profile';
+        // https://developers.line.biz/en/reference/line-login/#verify-id-token
+
+        $verify_url = 'https://api.line.me/oauth2/v2.1/verify';
         $post_data = [
-            'headers' => [
-                'Authorization' => $payload['token_type'].' '.$payload['access_token'],
+            'form_params' => [
+                'id_token' => $payload['id_token'],
+                'client_id' => env("LOGIN_CLIENT_ID")
             ],
             'http_errors' => false
         ];
         $response_verify = $http->post($verify_url, $post_data);
+        // dd($response_verify->getBody());
 
         if ($response_verify->getStatusCode() != 200) {
-            return redirect("/login")->with(["msg" => $response_verify->getBody()]);
+            session()->flash('msg', $response_verify->getBody());
+            return redirect("/login");
         }
 
         $profile = json_decode((string)$response_verify->getBody(), true);
+        // dd($profile);
 
         // 存使用者資訊
         session([
             'access_token'=>$payload['access_token'],
             'refresh_token'=>$payload['refresh_token'],
-            'user_id'=>$profile['userId'],
-            'user_name'=>$profile['displayName'],
-            'user_pic'=>$profile['pictureUrl']
+            'user_id'=>$profile['email'],
+            'user_name'=>$profile['name'],
+            'user_pic'=>$profile['picture']
         ]);
 
         return redirect('/');

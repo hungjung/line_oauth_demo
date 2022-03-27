@@ -44,15 +44,15 @@
                                     </div>
                                     <form class="user">
                                         <p>&nbsp;</p>
-                                        <p>&nbsp;</p>
-                                        @if(isset($msg))
+                                        @if(isset($msg) || session('msg'))
                                         <div class="card mb-1 py-1 border-left-danger">
-                                            {{ $msg }}
+                                            {{ $msg ?? session('msg') }}
                                         </div>
                                         @endif
-                                        <a href="/googlelogin" class="btn btn-google btn-user btn-block">
+                                        <p>&nbsp;</p>
+                                        {{-- <a href="/googlelogin" class="btn btn-google btn-user btn-block">
                                             <i class="fab fa-google fa-fw"></i> Login with Google
-                                        </a>
+                                        </a> --}}
                                         <a href="/linelogin" class="btn btn-facebook btn-user btn-block">
                                             <i class="fas fa-sign-in-alt"></i> Login with Line ID
                                         </a>

@@ -26,9 +26,7 @@ Route::get('/callback', [LoginController::class, 'callback']);
 
 Route::middleware(['userAuth'])->group(function(){
     // 主頁
-    Route::get('/', function () {
-        return view('blank');
-    });
+    Route::get('/', [LoginController::class, 'index']);
 
     // 訂閱通知
     Route::get('/scribe', function () {
