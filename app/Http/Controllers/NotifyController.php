@@ -73,7 +73,7 @@ class NotifyController extends Controller
 
         $payload = json_decode((string)$response->getBody(), true);
 
-        DB::insert('insert into subscribe (user_name, user_access_token, created_at) values (?, ?, ?)', [session('user_id'), $payload['access_token'], Carbon::now()]);
+        DB::insert('insert into subscribe (user_name, user_access_token, created_at) values (?, ?, ?)', [session('user_id'), $payload['access_token'], Carbon::now("Asia/Taipei")]);
 
         return redirect("/subscribe");
 
