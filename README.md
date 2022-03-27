@@ -1,64 +1,40 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+## 實作情境
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+* 實作使用者登入 (LINE Login)
+* 實作使用者訂閱通知功能 (LINE Notify) (取得 Access Token 並儲存)
+* 實作使用者訂閱成功頁面 (LINE Notify)
+* 實作使用者取消訂閱功能 (LINE Notify) (撤銷 Access Token 才行)
+* 實作後台發送推播訊息功能 (可以發送訊息給所有訂閱的人) (LINE Notify)
 
-## About Laravel
+## 參考文件
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+* [Integrating LINE Login with your web app](https://developers.line.biz/en/docs/line-login/integrate-line-login/)
+* [LINE Login v2.1 API reference](https://developers.line.biz/en/reference/line-login/)
+* [LINE Notify API Document](https://notify-bot.line.me/doc/en/)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 執行環境
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+* Web伺服器： Apache 2.4
+* 程式語言： PHP 7.4
+* MVC框架： Laravel 8
 
-## Learning Laravel
+## 專案說明
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+* 程式進入點： `routes/web.php`
+* view資料夾： `resource/views/`
+* controller資料夾： `app/Http/controllers/`
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 專案使用
 
-## Laravel Sponsors
+* 先在專案目錄內
+  * 指令 `composer install` 安裝所需要的套件庫。
+  * 指令 `copy .env.example .env`，並在.env檔內編輯重要參數值。
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+* .env檔以下參數設定
+  * APP_URL： 專案的主要url
+  * LOGIN_CLIENT_ID： 實作line login的client id (channel id)
+  * LOGIN_CLIENT_SECRET： 實作line login的client secret
+  * LOGIN_CALLBACK： 實作line login要用到的redirect url
+  * NOTIFY_CLIENT_ID： 實作line notify的client id
+  * NOTIFY_CLIENT_SECRET： 實作line notify的client secret
+  * NOTIFY_CALLBACK： 實作line notify要用到的redirect url
