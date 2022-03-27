@@ -26,6 +26,7 @@
 * Web伺服器： Apache 2.4
 * 程式語言： PHP 7.4
 * MVC框架： Laravel 8
+* 專案樣版取材自 [[Start Bootstrap - SB Admin 2](https://startbootstrap.com/theme/sb-admin-2)]
 
 ## 專案說明
 
