@@ -36,7 +36,7 @@ class UserAuth
         if ($response->getStatusCode() != 200) {
             session()->flush();
             session()->regenerate();
-            return view("/login", ['msg'=>"登入逾時，請重新登入！"]);
+            return response()->view("/login", ['msg'=>"登入逾時，請重新登入！"]);
         }
 
         return $next($request);
