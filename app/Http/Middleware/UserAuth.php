@@ -14,7 +14,7 @@ class UserAuth
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next, GuzzleClient $http)
+    public function handle($request, Closure $next)
     {
         // 本機session確認
         if(!session('user_name')){
@@ -29,6 +29,8 @@ class UserAuth
             ],
             'http_errors' => false
         ];
+
+        $http = new GuzzleClient();
         $response = $http->get($verify_url, $query);
 
         if ($response->getStatusCode() != 200) {
