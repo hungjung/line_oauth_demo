@@ -46,6 +46,7 @@
                 主要功能
             </div>
 
+            @if (session("user_name"))
             <!-- Nav Item - Charts -->
             <li class="nav-item">
                 <a class="nav-link" href="/subscribe">
@@ -67,6 +68,14 @@
                     <i class="fas fa-fw fa-table"></i>
                     <span>發送訊息</span></a>
             </li>
+
+            <!-- Nav Item - Tables -->
+            <li class="nav-item">
+                <a class="nav-link" href="/">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>回主頁</span></a>
+            </li>
+            @endif
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -120,6 +129,7 @@
                             </div>
                         </li>
 
+                        @if (session("user_name"))
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
@@ -138,6 +148,7 @@
                                 </a>
                             </div>
                         </li>
+                        @endif
 
                     </ul>
 
@@ -148,7 +159,7 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-4 text-gray-800">Blank Page</h1>
+                    <h1 class="h3 mb-4 text-gray-800">@yield('title')</h1>
 
                     @yield('content')
 

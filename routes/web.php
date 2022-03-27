@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use \GuzzleHttp\Client as GuzzleClient;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\NotifyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,19 +30,11 @@ Route::middleware(['userAuth'])->group(function(){
     Route::get('/', [LoginController::class, 'index']);
 
     // 訂閱通知
-    Route::get('/scribe', function () {
-        return view('scribe');
-    });
-
+    Route::get('/subscribe', [NotifyController::class, 'subscribe']);
     // 取消訂閱
-    Route::get('/unscribe', function () {
-        return view('unscribe');
-    });
-
+    Route::get('/unsubscribe', [NotifyController::class, 'unsubscribe']);
     // 發佈訊息
-    Route::get('/unscribe', function () {
-        return view('unscribe');
-    });
+    Route::get('/sendout', [NotifyController::class, 'sendout']);
 
     // 登出動作
     Route::get('logout', [LoginController::class, 'logout']);
