@@ -29,8 +29,13 @@ Route::middleware(['userAuth'])->group(function(){
     // 主頁
     Route::get('/', [LoginController::class, 'index']);
 
-    // 訂閱通知
+    // 訂閱通知頁面
     Route::get('/subscribe', [NotifyController::class, 'subscribe']);
+    // 送出申請訂閱的請求
+    Route::get('/notifyapp', [NotifyController::class, 'notifyapp']);
+    // notifycallback
+    Route::get('/notifycallback', [NotifyController::class, 'notifycallback']);
+
     // 取消訂閱
     Route::get('/unsubscribe', [NotifyController::class, 'unsubscribe']);
     // 發佈訊息
