@@ -79,8 +79,49 @@ class NotifyController extends Controller
 
     }
 
+    // 取消訂閱頁面
     public function unsubscribe() {
-        return view('unsubscribe');
+
+        $get_subsribes = DB::select('select user_name,user_access_token,created_at from subscribe where user_name=?', [session("user_id")]);
+        $cnt = count($get_subsribes);
+
+        return view('unsubscribe', ["cnt" => $cnt]);
+    }
+
+    // 送出取消訂閱的請求
+    public function notifyrevoke(GuzzleClient $http) {
+
+        $select_sql = 'select user_name,user_access_token,created_at from subscribe where user_name=?';
+        $get_subsribes = DB::select($select_sql, [session("user_id")]);
+        $cnt = count($get_subsribes);
+
+        if ($cnt<=0) {
+            return response("無效操作", 403);
+        }
+
+        $user_access_token = $get_subsribes[0]->user_access_token;
+
+        // 實作註銷 line login access token 的流程
+        $revoke_url = 'https://notify-api.line.me/api/revoke';
+        $form_data = [
+            'headers' => [
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer '.$user_access_token,
+            ],
+            'http_errors' => false
+        ];
+
+        $revoke_response = $http->post($revoke_url, $form_data);
+        $revoke = json_decode((string)$revoke_response->getBody(), true);
+
+        if ($revoke['status']==200) {
+            DB::delete('delete from subscribe where user_name=?', [session('user_id')]);
+            session()->flash("delete", 1);
+            return redirect('unsubscribe');
+        } else {
+            session()->flash("delete", 2);
+            return redirect('unsubscribe');
+        }
     }
 
     public function sendout() {

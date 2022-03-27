@@ -38,6 +38,9 @@ Route::middleware(['userAuth'])->group(function(){
 
     // 取消訂閱
     Route::get('/unsubscribe', [NotifyController::class, 'unsubscribe']);
+    // 送出取消訂閱的請求
+    Route::get('/notifyrevoke', [NotifyController::class, 'notifyrevoke']);
+
     // 發佈訊息
     Route::get('/sendout', [NotifyController::class, 'sendout']);
 
