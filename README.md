@@ -48,7 +48,7 @@
     GRANT SELECT, INSERT, CREATE, ALTER, DROP, LOCK TABLES, CREATE TEMPORARY TABLES, DELETE, UPDATE, EXECUTE ON 資料庫名稱 .* TO '使用者帳號'@'%';
     ```
   * 指令 `copy .env.example .env`，並在.env檔內編輯重要參數值。
-  * 指令 `php artisan migrate` ，會依據 `databse/migrations/` 的內容，把資料表建置起來 (或可以直接參考下列建表指令)。
+  * 指令 `php artisan migrate` ，會依據 `database/migrations/` 的內容，把資料表建置起來 (或可以直接參考下列建表指令)。
     ```sql=
     CREATE TABLE `subscribe` (
         `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
