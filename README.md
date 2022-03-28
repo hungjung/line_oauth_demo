@@ -85,7 +85,9 @@
   * DB_USERNAME： 資料庫帳號
   * DB_PASSWORD： 資料庫密碼
   * JWT_SECRET： 傳Notify訂閱時，將使用者識別碼(user_id)加密為jwt token，再透過state變數傳遞資訊，JWT_SECRET是用來加解密用的key，本專案使用的HS256 Hashing演算法
-    > [How to generate key pair for php-jwt?](https://stackoverflow.com/questions/51327584/how-to-generate-key-pair-for-php-jwt)
+    > [How to generate key pair for php-jwt?](https://stackoverflow.com/questions/51327584/how-to-generate-key-pair-for-php-jwt)<br>
+    > [JWT](https://jwt.io/) 是基於 JSON 的開放標準 ([RFC 7519](https://datatracker.ietf.org/doc/html/rfc7519)) <br>
+    > 若是額外安裝 `[tymon/jwt-auth](https://packagist.org/packages/tymon/jwt-auth)` 套件，可於專案內執行 `php artisan jwt:secret` 指令，以便產生實作jwt token所需要的key ([參照文件](https://jwt-auth.readthedocs.io/en/develop/laravel-installation/#generate-secret-key))
 
 ## 其他資源
 
