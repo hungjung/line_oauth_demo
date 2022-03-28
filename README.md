@@ -9,28 +9,44 @@
   * 實作使用者訂閱成功頁面
   * 實作使用者取消訂閱功能 (撤銷 Access Token 才行)
   * 實作後台發送推播訊息功能 (可以發送訊息給所有訂閱的人)
+* 程式架構對照
+    | Method | URI          | Action                        | Middleware | 說明                                 |
+    | ------ | ------------ | ----------------------------- | ---------- | ------------------------------------ |
+    | GET    | /            | LoginController@index         | UserAuth   | 登入後的主頁                         |
+    | GET    | login        | LoginController@login         |            | 登入頁                               |
+    | GET    | linelogin    | LoginController@redirect      |            | authorization轉址                    |
+    | GET    | callback     | LoginController@callback      |            | line login callback  |
+    | GET    | logout       | LoginController@logout        | UserAuth   | 登出的動作                           |
+    | GET    | subscribe    | NotifyController@subscribe    | UserAuth   | 訂閱介面                             |
+    | GET    | unsubscribe  | NotifyController@subscribe    | UserAuth   | 取消訂閱介面                         |
+    | GET    | senout       | NotifyController@senout       | UserAuth   | 發佈訊息介面                         |
+    | GET    | notifyapp    | NotifyController@notifyapp    | UserAuth   | 訂閱請求實作                           |
+    | GET    | notifyrevoke | NotifyController@notifyrevoke | UserAuth   | 取消訂閱請求實作                     |
+    | POST   | sendout      | NotifyController@message      | UserAuth   | 發佈訊息請求實作                      |
+    | POST   | api/notifycallback  | NotifyController@notifycallback      | UserAuth   | line notify callback          |
 
 ## 參考文件
 
-* [Laravel Document (For 8.x)](https://laravel.com/docs/8.x)
 * [Guzzle, PHP HTTP client](https://docs.guzzlephp.org/en/stable/index.html)
     > 此套件Laravel框架有內建，不需要額外安裝<br>
     > 額外安裝的套件： [firebase/php-jwt](https://github.com/firebase/php-jwt)
 * [Integrating LINE Login with your web app](https://developers.line.biz/en/docs/line-login/integrate-line-login/)
 * [LINE Login v2.1 API reference](https://developers.line.biz/en/reference/line-login/)
-    > 目前LINE官方提供LINE Login V2.1，基於OAuth2.0和OpenID Connect協定。 <br>
+    > 目前LINE官方提供LINE Login V2.1，基於[OAuth2.0](https://oauth.net/2/)和[OpenID Connect](https://openid.net/connect/)協定。 <br>
     > authorize code 有效期： 10分鐘<br>
     > access token 有效期： 30天<br>
-    > refresh token 有效期： 90天
+    > refresh token 有效期： 90天 (目前沒用到)
 * [LINE Notify API Document](https://notify-bot.line.me/doc/en/)
     > 個人的 access token 永久有效<br>
     > 一小時內單一 server 單一 access token 呼叫 api 次數上限是1000次
 
 ## 執行環境
 
-* Web伺服器： Apache 2.4
-* 程式語言： PHP 7.4
+* Web伺服器： [Apache 2.4](https://httpd.apache.org/)
+* 程式語言： [PHP 7.4](https://www.php.net/)
+* 套件管理： [Composer (PHP領域的npm)](https://getcomposer.org/)
 * MVC框架： [Laravel 8](https://laravel.com/docs/8.x)
+* 資料庫： [MySQL 5.7](https://www.mysql.com/)
 * 專案樣版取材自 [[Start Bootstrap - SB Admin 2](https://startbootstrap.com/theme/sb-admin-2)]
 
 ## 專案說明
@@ -44,16 +60,16 @@
 
 ## 專案使用
 
+* 先準備好 mysql 資料庫 (也可以改用SQLite)
+  ```sql=
+  CREATE USER '使用者帳號'@'%' IDENTIFIED BY '使用者密碼';
+  CREATE DATABASE IF NOT EXISTS 資料庫名稱 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+  GRANT SELECT, INSERT, CREATE, ALTER, DROP, LOCK TABLES, CREATE TEMPORARY TABLES, DELETE, UPDATE, EXECUTE ON 資料庫名稱 .* TO '使用者帳號'@'%';
+  ```
 * 先在專案目錄內
-  * 指令 `composer install` 安裝所需要的套件庫。
-  * 先準備好mysql資料庫
-    ```sql=
-    CREATE USER '使用者帳號'@'%' IDENTIFIED BY '使用者密碼';
-    CREATE DATABASE IF NOT EXISTS 資料庫名稱 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-    GRANT SELECT, INSERT, CREATE, ALTER, DROP, LOCK TABLES, CREATE TEMPORARY TABLES, DELETE, UPDATE, EXECUTE ON 資料庫名稱 .* TO '使用者帳號'@'%';
-    ```
-  * 指令 `copy .env.example .env`，並在.env檔內編輯重要參數值。
-  * 指令 `php artisan migrate` ，會依據 `database/migrations/` 的內容，把資料表建置起來 (或可以直接參考下列建表指令)。
+  * 安裝所需要的套件庫：執行指令 `composer install` 。
+  * 產生 `.env` 檔：將 `.env.example` 檔案複製一份為 `.env` 檔，並在.env檔內編輯重要參數值。
+  * [指令 `php artisan migrate`](https://laravel.com/docs/8.x/migrations#running-migrations) ，會依據 `database/migrations/` 的內容，把資料表建置起來 (或可以直接參考下列建表指令)。
     ```sql=
     CREATE TABLE `subscribe` (
         `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -67,11 +83,10 @@
     ENGINE=InnoDB
     ;
     ```
-
 * Laravel 網頁根目錄設定在 `public`。
-    > [Laravel Directory Structure](https://laravel.com/docs/8.x/structure)
-
+  > [Laravel Directory Structure](https://laravel.com/docs/8.x/structure)
 * .env檔以下參數設定
+  > [在程式中用 `env()` 函式取得](https://laravel.com/docs/8.x/configuration)
   * APP_URL： 專案的主要url
   * LOGIN_CLIENT_ID： 實作line login的client id (channel id)
   * LOGIN_CLIENT_SECRET： 實作line login的client secret
@@ -79,6 +94,7 @@
   * NOTIFY_CLIENT_ID： 實作line notify的client id
   * NOTIFY_CLIENT_SECRET： 實作line notify的client secret
   * NOTIFY_CALLBACK： 實作line notify要用到的redirect url
+  * DB_CONNECTION： 資料庫連結的種類
   * DB_HOST： 資料庫主機位址
   * DB_PORT： 資料庫連結埠號(MySQL預設3306)
   * DB_DATABASE： 資料庫名稱
@@ -101,3 +117,4 @@
 * [HENNGE Taiwan 部落格 - OpenID Connect 是什麼？](https://hennge.com/tw/blog/what-is-openid-connect.html)
 * [OKTA - The Client ID and Secret](https://www.oauth.com/oauth2-servers/client-registration/client-id-secret/)
 * [各大網站 OAuth 2.0 實作差異](https://blog.yorkxin.org/posts/oauth2-implementation-differences-among-famous-sites.html)
+* [未來標準 - OAuth2.1](https://oauth.net/2.1/)
