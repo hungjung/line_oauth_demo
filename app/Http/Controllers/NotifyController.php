@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use \GuzzleHttp\Client as GuzzleClient;
+use Firebase\JWT\JWT;
+use Firebase\JWT\KEY;
 
 class NotifyController extends Controller
 {
@@ -20,13 +22,25 @@ class NotifyController extends Controller
 
     // 送出notify訂閱認證請求
     public function notifyapp() {
+
+        $now = Carbon::now()->timestamp;
+        $key = env("JWT_SECRET");
+        $payload = [
+            "iss" => env("APP_URL"),
+            "name" => session('user_id'),
+            "iat" => $now,
+        ];
+
+        $jwt = JWT::encode($payload, $key, 'HS256');
+
         $authorize_url = "https://notify-bot.line.me/oauth/authorize";
         $query = http_build_query([
             'response_type' => "code",
             'client_id' => env("NOTIFY_CLIENT_ID"),
             'redirect_uri' => env("NOTIFY_CALLBACK"),
-            'state' => csrf_token(),
+            'state' => $jwt,
             'scope' => 'notify',
+            'response_mode' => 'form_post'
         ]);
 
         return redirect($authorize_url.'?'.$query);
@@ -41,10 +55,10 @@ class NotifyController extends Controller
          * state
          */
         $code = $request->code;
-        // 取得 state 和 csrf_token 比對
-        if ($request->state !== csrf_token()) {
-            return response('無效的操作！', 403);
-        }
+        // $user_id 取得自 state
+        $key = env("JWT_SECRET");
+        $decoded = JWT::decode($request->state, new Key($key, 'HS256'));
+        $user_id = $decoded->name;
 
         // 透過所取得的code去取access token
         $token_url = "https://notify-bot.line.me/oauth/token";
@@ -62,7 +76,7 @@ class NotifyController extends Controller
         $response = $http->post($token_url, $form_data);
 
         if ($response->getStatusCode() != 200) {
-            return view("/login", ['msg'=>$response->getBody()]);
+            return response($response->getBody()["error_description"], $response->getStatusCode());
         }
 
         // 成功取得access token資訊
@@ -73,7 +87,7 @@ class NotifyController extends Controller
 
         $payload = json_decode((string)$response->getBody(), true);
 
-        DB::insert('insert into subscribe (user_name, user_access_token, created_at) values (?, ?, ?)', [session('user_id'), $payload['access_token'], Carbon::now("Asia/Taipei")]);
+        DB::insert('insert into subscribe (user_name, user_access_token, created_at) values (?, ?, ?)', [$user_id, $payload['access_token'], Carbon::now("Asia/Taipei")]);
 
         return redirect("/subscribe");
 

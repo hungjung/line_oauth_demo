@@ -34,7 +34,7 @@ Route::middleware(['userAuth'])->group(function(){
     // 送出申請訂閱的請求
     Route::get('/notifyapp', [NotifyController::class, 'notifyapp']);
     // notifycallback
-    Route::get('/notifycallback', [NotifyController::class, 'notifycallback']);
+    // Route::get('/notifycallback', [NotifyController::class, 'notifycallback']);
 
     // 取消訂閱
     Route::get('/unsubscribe', [NotifyController::class, 'unsubscribe']);
