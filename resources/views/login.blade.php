@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Login</title>
+    <title>訊息訂閱系統 - Login</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -39,8 +39,8 @@
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
-                                        <p>OAuth實作作業</p>
+                                        <h1 class="h4 text-gray-900 mb-4">Notify訊息訂閱系統</h1>
+                                        <p>OAuth2.0實作 By Hong-Rong, Zhai</p>
                                     </div>
                                     <form class="user">
                                         <p>&nbsp;</p>
