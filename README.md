@@ -1,9 +1,10 @@
 ## 實作情境
 
 * 實作使用者登入 (LINE Login)： 主要實作在 `app/Http/Controller/LoginController.php`
-  [Imgur](https://i.imgur.com/s6dJZPs.png)
+  <a href="https://imgur.com/s6dJZPs"><img src="https://i.imgur.com/s6dJZPs.png" title="source: imgur.com" /></a>
+  
 * 實作Notify訂閱服務 (LINE Notify)： 主要實作在 `app/Http/Controller/NotifyController.php`
-  [Imgur](https://i.imgur.com/cYBPtpp.png)
+  <a href="https://imgur.com/cYBPtpp"><img src="https://i.imgur.com/cYBPtpp.png" title="source: imgur.com" /></a>
   * 實作使用者訂閱通知功能 (取得 Access Token 並儲存)
   * 實作使用者訂閱成功頁面
   * 實作使用者取消訂閱功能 (撤銷 Access Token 才行)
