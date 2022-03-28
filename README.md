@@ -12,6 +12,7 @@
 * [Laravel Document (For 8.x)](https://laravel.com/docs/8.x)
 * [Guzzle, PHP HTTP client](https://docs.guzzlephp.org/en/stable/index.html)
     > 此套件Laravel框架有內建，不需要額外安裝
+    > 額外安裝的套件： [firebase/php-jwt](https://github.com/firebase/php-jwt)
 * [Integrating LINE Login with your web app](https://developers.line.biz/en/docs/line-login/integrate-line-login/)
 * [LINE Login v2.1 API reference](https://developers.line.biz/en/reference/line-login/)
     > 目前LINE官方提供LINE Login V2.1，基於OAuth2.0和OpenID Connect協定。 <br>
@@ -78,6 +79,8 @@
   * DB_DATABASE： 資料庫名稱
   * DB_USERNAME： 資料庫帳號
   * DB_PASSWORD： 資料庫密碼
+  * JWT_SECRET： 傳Notify訂閱時，將使用者識別碼(user_id)加密為jwt token，再透過state變數傳遞資訊，JWT_SECRET是用來加解密用的key，本專案使用的HS256 Hashing演算法
+    > [How to generate key pair for php-jwt?](https://stackoverflow.com/questions/51327584/how-to-generate-key-pair-for-php-jwt)
 
 ## 其他資源
 
