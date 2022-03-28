@@ -23,7 +23,7 @@
     | GET    | notifyapp    | NotifyController@notifyapp    | UserAuth   | 訂閱請求實作                           |
     | GET    | notifyrevoke | NotifyController@notifyrevoke | UserAuth   | 取消訂閱請求實作                     |
     | POST   | sendout      | NotifyController@message      | UserAuth   | 發佈訊息請求實作                      |
-    | POST   | api/notifycallback  | NotifyController@notifycallback      | UserAuth   | line notify callback          |
+    | POST   | api/notifycallback  | NotifyController@notifycallback      |    | line notify callback          |
 
 ## 參考文件
 
