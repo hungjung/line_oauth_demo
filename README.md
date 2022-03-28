@@ -14,7 +14,7 @@
 
 * [Laravel Document (For 8.x)](https://laravel.com/docs/8.x)
 * [Guzzle, PHP HTTP client](https://docs.guzzlephp.org/en/stable/index.html)
-    > 此套件Laravel框架有內建，不需要額外安裝
+    > 此套件Laravel框架有內建，不需要額外安裝<br>
     > 額外安裝的套件： [firebase/php-jwt](https://github.com/firebase/php-jwt)
 * [Integrating LINE Login with your web app](https://developers.line.biz/en/docs/line-login/integrate-line-login/)
 * [LINE Login v2.1 API reference](https://developers.line.biz/en/reference/line-login/)
@@ -30,12 +30,13 @@
 
 * Web伺服器： Apache 2.4
 * 程式語言： PHP 7.4
-* MVC框架： Laravel 8
+* MVC框架： [Laravel 8](https://laravel.com/docs/8.x)
 * 專案樣版取材自 [[Start Bootstrap - SB Admin 2](https://startbootstrap.com/theme/sb-admin-2)]
 
 ## 專案說明
 
 * 程式進入點： `routes/web.php`
+  > 為了接受 line notify api 回傳的 post 請求，將接收此請求的路由放置於 `routes/api.php` (為了避開Laravel內建的CSRF保護)。
 * view資料夾： `resource/views/`
 * controller資料夾： `app/Http/controllers/`
 * 資料表schema： `databse/migrations/`
@@ -68,6 +69,7 @@
     ```
 
 * Laravel 網頁根目錄設定在 `public`。
+    > [Laravel Directory Structure](https://laravel.com/docs/8.x/structure)
 
 * .env檔以下參數設定
   * APP_URL： 專案的主要url
@@ -96,3 +98,4 @@
 * [第 11 屆 iThome 鐵人賽：LINE bot 好好玩 30 天玩轉 LINE API 系列](https://ithelp.ithome.com.tw/users/20117701/ironman/2634)
 * [HENNGE Taiwan 部落格 - OpenID Connect 是什麼？](https://hennge.com/tw/blog/what-is-openid-connect.html)
 * [OKTA - The Client ID and Secret](https://www.oauth.com/oauth2-servers/client-registration/client-id-secret/)
+* [各大網站 OAuth 2.0 實作差異](https://blog.yorkxin.org/posts/oauth2-implementation-differences-among-famous-sites.html)
