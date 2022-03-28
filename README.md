@@ -88,3 +88,5 @@
 * [台中區網中心：Line Bot應用與分享](https://www.tcrc.edu.tw/set/new-list/linebot)
 * [外國人實作的套件庫之一 phattarachai/line-notify](https://github.com/phattarachai/line-notify)
 * [第 11 屆 iThome 鐵人賽：LINE bot 好好玩 30 天玩轉 LINE API 系列](https://ithelp.ithome.com.tw/users/20117701/ironman/2634)
+* [HENNGE Taiwan 部落格 - OpenID Connect 是什麼？](https://hennge.com/tw/blog/what-is-openid-connect.html)
+* [OKTA - The Client ID and Secret](https://www.oauth.com/oauth2-servers/client-registration/client-id-secret/)
