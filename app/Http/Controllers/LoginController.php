@@ -96,13 +96,13 @@ class LoginController extends Controller
         // dd($payload);
 
         // 取使用者Data
-        // https://developers.line.biz/en/reference/line-login/#verify-id-token
+        // https://developers.line.biz/en/reference/line-login/#get-user-profile
 
-        $verify_url = 'https://api.line.me/oauth2/v2.1/verify';
+        $verify_url = 'https://api.line.me/v2/profile';
         $post_data = [
-            'form_params' => [
-                'id_token' => $payload['id_token'],
-                'client_id' => env("LOGIN_CLIENT_ID")
+            'headers' => [
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer '.$payload['access_token'],
             ],
             'http_errors' => false
         ];
@@ -121,9 +121,9 @@ class LoginController extends Controller
         session([
             'access_token'=>$payload['access_token'],
             'refresh_token'=>$payload['refresh_token'],
-            'user_id'=>$profile['email'],
-            'user_name'=>$profile['name'],
-            'user_pic'=>$profile['picture']
+            'user_id'=>$profile['userId'],
+            'user_name'=>$profile['displayName'],
+            'user_pic'=>$profile['pictureUrl']
         ]);
 
         return redirect('/');
